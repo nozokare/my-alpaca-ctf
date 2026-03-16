@@ -1,0 +1,15 @@
+# 問題文関連
+*.tar.gz
+.src
+
+# environment
+*.env
+
+# node 
+node_modules
+
+# python
+__pycache__
+
+# git
+!.gitkeep

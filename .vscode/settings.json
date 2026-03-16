@@ -1,0 +1,7 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.fixAll.prettier": "explicit",
+    "source.fixAll.pylance": "explicit"
+  }
+}
