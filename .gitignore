@@ -1,6 +1,6 @@
 # 問題文関連
 *.tar.gz
-.src
+handout/
 
 # environment
 *.env
