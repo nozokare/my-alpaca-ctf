@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "alpaca:new": "bash ./scripts/new-challenge.sh -i"
+    "alpaca:new": "bash ./scripts/new-challenge.sh -i",
+    "postinstall": "lefthook install"
   },
   "dependencies": {
     "dotenv": "^17.3.1",
@@ -9,7 +10,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.7",
-    "@types/node": "^25.5.0"
+    "@types/node": "^25.5.0",
+    "lefthook": "^2.1.4"
   },
   "type": "module"
 }

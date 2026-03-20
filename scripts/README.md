@@ -29,15 +29,15 @@
 
 **オプション一覧**
 
-| オプション | 説明 |
-|---|---|
-| `-t`, `--type <daily\|bside>` | challenge の種別（非対話時は必須） |
-| `-d`, `--date <yyyymmdd>` | 日付（省略時: 今日） |
-| `-T`, `--title <title>` | タイトル。slug を自動生成（非対話時は必須） |
-| `-u`, `--url <url>` | handout のダウンロード URL（省略可） |
-| `-c`, `--connect <string>` | 接続文字列。`.env` に保存（省略可） |
-| `-i`, `--interactive` | 未指定オプションを対話で入力 |
-| `--no-open` | VS Code で `writeup.md` を開かない |
+| オプション                    | 説明                                        |
+| ----------------------------- | ------------------------------------------- |
+| `-t`, `--type <daily\|bside>` | challenge の種別（非対話時は必須）          |
+| `-d`, `--date <yyyymmdd>`     | 日付（省略時: 今日）                        |
+| `-T`, `--title <title>`       | タイトル。slug を自動生成（非対話時は必須） |
+| `-u`, `--url <url>`           | handout のダウンロード URL（省略可）        |
+| `-c`, `--connect <string>`    | 接続文字列。`.env` に保存（省略可）         |
+| `-i`, `--interactive`         | 未指定オプションを対話で入力                |
+| `--no-open`                   | VS Code で `writeup.md` を開かない          |
 
 ---
 
@@ -54,6 +54,32 @@ main にマージされていないローカルブランチをすべて main に
 
 **オプション一覧**
 
-| オプション | 説明 |
-|---|---|
+| オプション        | 説明                              |
+| ----------------- | --------------------------------- |
 | `-n`, `--dry-run` | rebase せずに対象ブランチだけ表示 |
+
+---
+
+### check-publish-dates.sh
+
+challenge の公開禁止期間を確認するスクリプトです。
+
+- **daily**: 出題日の翌日から公開可能
+- **bside**: 出題日の4日後から公開可能
+
+公開可能日より前の challenge ディレクトリがリポジトリに含まれていれば、その challenge を BLOCKED と判定します。
+
+**スタンドアロン実行**
+
+```bash
+./scripts/check-publish-dates.sh          # HEAD を確認
+./scripts/check-publish-dates.sh <ref>    # 任意の treeish を確認
+```
+
+**pre-push フックを設定**
+
+```bash
+npm install
+```
+
+を実行すると `LeftHook` を使ったフックがインストールされます。

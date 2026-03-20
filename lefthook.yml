@@ -1,0 +1,4 @@
+pre-push:
+  commands:
+    publish-embargo:
+      run: ./scripts/check-publish-dates.sh --pre-push
