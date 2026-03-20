@@ -1,5 +1,7 @@
 # FLAG OVER
 
+https://alpacahack.com/daily/challenges/flag-over
+
 ## 問題の概要
 
 接続すると `bash -i` を起動する Python サーバーが動いています。

@@ -1,5 +1,7 @@
 # guess.js
 
+https://alpacahack.com/daily/challenges/guessjs
+
 ## 問題の概要
 
 nodejs サーバーで入力した `guess` が次のように処理されます。

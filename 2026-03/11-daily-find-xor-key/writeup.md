@@ -1,5 +1,7 @@
 # Find XOR key
 
+https://alpacahack.com/daily/challenges/find-xor-key
+
 ## 問題の概要
 
 フラグを暗号化した HEX 文字列を解読する Crypto 問題です。

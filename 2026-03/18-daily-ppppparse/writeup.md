@@ -1,5 +1,7 @@
 # PPPPParse
 
+https://alpacahack.com/daily/challenges/ppppparse
+
 ## 問題の概要
 
 `JSON.parse` を 5 回適応した結果が `"42"` になるような文字列を入力する問題です。

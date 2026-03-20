@@ -1,5 +1,7 @@
 # Free Coupon
 
+https://alpacahack.com/daily/challenges/free-coupon
+
 ## 問題
 
 sessionでサーバー側に保存されている `balance` が 30 以上の状態で `/buy` にアクセスするとFLAGが出力される。

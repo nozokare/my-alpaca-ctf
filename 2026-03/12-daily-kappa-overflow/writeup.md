@@ -1,5 +1,7 @@
 # kappa overflow
 
+https://alpacahack.com/daily/challenges/kappa-overflow
+
 ## 問題の概要
 
 サーバーで動いてる C言語プログラムの処理の途中で `UnhandledException` を発生させるとフラグが出力される問題です。
