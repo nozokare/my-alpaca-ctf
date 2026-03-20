@@ -81,7 +81,7 @@ parse_args() {
           echo "Missing value for $1" >&2
           exit 1
         }
-        date="$2"
+        [[ -n "$2" ]] && date="$2"
         shift 2
         ;;
       -T|--title)
@@ -97,7 +97,7 @@ parse_args() {
           echo "Missing value for $1" >&2
           exit 1
         }
-        url="$2"
+        [[ -n "$2" ]] && url="$2"
         shift 2
         ;;
       -c|--connect)
@@ -105,7 +105,7 @@ parse_args() {
           echo "Missing value for $1" >&2
           exit 1
         }
-        connect="$2"
+        [[ -n "$2" ]] && connect="$2"
         shift 2
         ;;
       -i|--interactive)
