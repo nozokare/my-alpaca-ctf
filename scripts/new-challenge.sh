@@ -13,6 +13,9 @@ The script asks for:
   - title (used to auto-generate slug)
   - url (optional)
   - connect string (optional)
+
+Directory layout:
+  yyyy-mm/dd-type-slug
 EOF
 }
 
@@ -188,7 +191,10 @@ while true; do
 done
 
 challenge_name="${type}-${date}-${slug}"
-challenge_dir="challenges/${challenge_name}"
+yyyy="${date:0:4}"
+mm="${date:4:2}"
+dd="${date:6:2}"
+challenge_dir="${yyyy}-${mm}/${dd}-${type}-${slug}"
 
 if [[ "$current_branch" == "$branch_name" ]]; then
   :
@@ -209,19 +215,9 @@ else
   echo "Created challenge directory: ${challenge_dir}"
 fi
 
-download() {
-  local url="$1"
-  local download_path="$2"
-
-}
-
-while true; do
-  read -r -p "Download URL (optional): " url
-  if [[ -z "$url" ]]; then
-    break
-  fi
-
-  download_folder="${challenge_dir}/.src"
+read -r -p "Download URL (optional): " url
+if [[ -n "$url" ]]; then
+  download_folder="${challenge_dir}/handout"
   mkdir -p "$download_folder"
 
   file_name="$(basename "${url%%\?*}")"
@@ -239,14 +235,14 @@ while true; do
   echo "Saved file: ${download_path}"
 
   if [[ "$file_name" == *.tar.gz ]]; then
-    timeout 10 tar -xzf "$download_path" -C "$download_folder"
+    timeout 10 tar -xzf "$download_path" -C "$download_folder" --strip-components=1
     if [[ $? -ne 0 ]]; then
       echo "Failed to extract tar.gz file: ${download_path}" >&2
       continue
     fi
     echo "Extracted to: ${download_folder}"
   fi
-done
+fi
 
 read -r -p "Connect string (optional): " connect
 if [[ -n "$connect" ]]; then
@@ -259,3 +255,16 @@ echo
 echo "Done."
 echo "branch: ${branch_name}"
 echo "challenge: ${challenge_dir}"
+
+mkdir -p "$challenge_dir"
+cat <<EOF > "${challenge_dir}/writeup.md"
+# ${title}
+
+## 問題の概要
+
+## 解法
+EOF
+
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  code "${challenge_dir}/writeup.md"
+fi
