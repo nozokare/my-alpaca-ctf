@@ -14,7 +14,7 @@ Options:
   -u, --url <url>            Download URL (optional)
   -c, --connect <string>     Connect string (optional)
   -i, --interactive          Prompt for any missing option interactively
-      --no-open              Do not open writeup.md in VS Code
+      --no-open              Do not open README.md in VS Code
   -h, --help                 Show this help
 
 By default the script runs non-interactively; --type and --title are required.
@@ -303,8 +303,16 @@ write_connect_file() {
 
 create_writeup() {
   mkdir -p "$challenge_dir"
-  cat <<EOF > "${challenge_dir}/writeup.md"
+  if [[ "${type}" == "daily" ]]; then
+    url="https://alpacahack.com/daily/challenges/${slug}"
+  elif [[ "${type}" == "bside" ]]; then
+    url="https://alpacahack.com/daily-bside/challenges/${slug}"
+  fi
+
+  cat <<EOF > "${challenge_dir}/README.md"
 # ${title}
+
+${url}
 
 ## 問題の概要
 
@@ -334,5 +342,5 @@ echo "branch: ${branch_name}"
 echo "challenge: ${challenge_dir}"
 
 if [[ "$open_in_vscode" == "true" && "${TERM_PROGRAM:-}" == "vscode" ]]; then
-  code "${challenge_dir}/writeup.md"
+  code "${challenge_dir}/README.md"
 fi
