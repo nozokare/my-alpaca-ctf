@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "alpaca:new": "bash ./scripts/new-challenge.sh"
+    "alpaca:new": "bash ./scripts/new-challenge.sh -i"
   },
   "dependencies": {
     "dotenv": "^17.3.1",
