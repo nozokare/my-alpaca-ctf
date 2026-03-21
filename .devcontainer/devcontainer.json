@@ -1,0 +1,55 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+  "name": "${localWorkspaceFolderBasename}",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:4-24-trixie",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "installDirectlyFromGitHubRelease": true,
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker": {
+      "version": "latest",
+      "moby": false,
+      "installDockerBuildx": true
+    }
+  },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": ".devcontainer/setup.sh",
+  "waitFor": "postStartCommand",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.black-formatter",
+        "biomejs.biome",
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-vscode.hexeditor",
+        "ms-vscode.cpptools"
+      ]
+    }
+  },
+
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=${localWorkspaceFolderBasename}-local,target=/mnt/local,type=volume"
+  ],
+
+  "remoteEnv": {
+    "HISTFILE": "/mnt/local/bash_history",
+    "NPM_CONFIG_CACHE": "/mnt/local/npm",
+    "GH_CONFIG_DIR": "/mnt/local/gh",
+    "UV_INSTALL_DIR": "/mnt/local/uv"
+  },
+
+  "remoteUser": "node"
+}
