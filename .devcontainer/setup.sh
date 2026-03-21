@@ -21,9 +21,15 @@ sudo apt-get install -y \
   meson \
   netcat-openbsd \
   ninja-build \
-  ripgrep
+  ripgrep \
+  xxd
 
 sudo apt-file update
+
+# Setup gdb config
+if [ ! -f ~/.gdbinit ]; then
+  echo "set auto-load safe-path /workspaces/alpaca-ctf" > ~/.gdbinit
+fi
 
 # Setup radare2
 version=$(curl -sL https://api.github.com/repos/radareorg/radare2/releases/latest | jq -r '.tag_name')
