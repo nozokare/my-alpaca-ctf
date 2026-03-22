@@ -38,3 +38,17 @@ r2pm -ci r2dec
 # Setup Workspace
 npm install
 uv sync
+
+
+# Add Utility functions to .bashrc
+sed "s|__PWD__|$PWD|" >> ~/.bashrc << 'EOF'
+cdc() {
+    local branch=$(git branch --show-current 2>/dev/null)
+    local type=${branch:0:5}
+    local year=${branch:6:4}
+    local month=${branch:10:2}
+    local day=${branch:12:2}
+
+    cd __PWD__/${year}-${month}/${day}-${type}-*
+}
+EOF
