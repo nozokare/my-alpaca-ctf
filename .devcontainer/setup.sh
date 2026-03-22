@@ -5,13 +5,16 @@ sudo chown $(id -u):$(id -g) /mnt/local
 
 # Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
+. "/mnt/local/uv/env"
 
 # Update NPM
 npm install -g npm
 
 # Install packages
 sudo apt-get update
+sudo apt-get upgrade -y
 sudo apt-get install -y \
+  checksec \
   cmake \
   command-not-found \
   gdb \
@@ -29,11 +32,14 @@ if [ ! -d "$install_dir" ]; then
   url="https://github.com/radareorg/radare2/releases/download/${version}/radare2-${version}.tar.xz"
   curl -Ls $url | tar xJ -C $install_dir --strip-components=1
   $install_dir/sys/install.sh
+else
+  pushd $install_dir
+  sudo make symstall
+  popd
 fi
 
 r2pm -U
-r2pm -ci r2ghidra
-r2pm -ci r2dec
+r2pm -i r2ghidra
 
 # Setup Workspace
 npm install
