@@ -65,7 +65,7 @@ curl -X POST -d "username=toString" http://localhost:3000/
 ユーザーから送信されたデータはすべて信頼できないものとして扱い、サーバー側で検証するのがWebアプリケーションのセキュリティの鉄則です。
 処理前に `username` と `password` が `string` 型であることや、必要に応じて文字列の長さや使用可能な文字の検証を行いましょう。
 
-パスワード比較のタイミング攻撃については、`crypto.timingSafeEqual` で比較すれば防ぐことができます。
+パスワード比較の時間差によるサイドチャネル攻撃については、`crypto.timingSafeEqual` で比較すれば防ぐことができます。
 
 ```js
 const users = new Map();
