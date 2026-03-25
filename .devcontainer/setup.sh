@@ -14,7 +14,6 @@ npm install -g npm
 sudo apt-get update
 sudo apt-get upgrade -y
 sudo apt-get install -y \
-  checksec \
   cmake \
   command-not-found \
   gdb \
@@ -26,12 +25,7 @@ sudo apt-get install -y \
 
 sudo apt-file update
 
-# Setup gdb config
-if [ ! -f ~/.gdbinit ]; then
-  echo "set auto-load safe-path /workspaces/alpaca-ctf" > ~/.gdbinit
-fi
-
-# Setup radare2
+# Install radare2
 version=$(curl -sL https://api.github.com/repos/radareorg/radare2/releases/latest | jq -r '.tag_name')
 install_dir="/mnt/local/radare2-${version}"
 if [ ! -d "$install_dir" ]; then
@@ -47,20 +41,15 @@ fi
 r2pm -U
 r2pm -i r2ghidra
 
+# Setup gdb config
+if [ ! -f ~/.gdbinit ]; then
+  echo "set auto-load safe-path /workspaces/alpaca-ctf" > ~/.gdbinit
+fi
+
 # Setup Workspace
 npm install
 uv sync
 
 
 # Add Utility functions to .bashrc
-sed "s|__PWD__|$PWD|" >> ~/.bashrc << 'EOF'
-cdc() {
-    local branch=$(git branch --show-current 2>/dev/null)
-    local type=${branch:0:5}
-    local year=${branch:6:4}
-    local month=${branch:10:2}
-    local day=${branch:12:2}
-
-    cd __PWD__/${year}-${month}/${day}-${type}-*
-}
-EOF
+cat .devcontainer/.bashrc | sed "s|__PWD__|$PWD|" >> ~/.bashrc
