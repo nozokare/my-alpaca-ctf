@@ -1,0 +1,2 @@
+0 // 1; print("I LOVE ALPACA"); exit(0)
+console.log("I LOVE SECCON")
