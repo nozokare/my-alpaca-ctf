@@ -18,11 +18,9 @@ def is_linearly_independent(vectors):
 
 def search_matrix(G: int):
     k = G.bit_length() - 1
+    # 自由度が足りるまで m1 = "A" * L の長さを増やす
     for L in range(k // 4, k):
-        m1 = "A" * L  # ベースとなるメッセージ
-        c1 = crc(m1.encode(), G)  # ベースとなるCRC値
         l = L.bit_length() + (-L.bit_length() % 8)  # 付加される長さのビット数
-
         A_cols = []
         index = []
         for i in range(L * 8):
@@ -42,23 +40,26 @@ def search_matrix(G: int):
 
         if len(A_cols) == k:
             A = GF2(np.stack(A_cols, axis=1))
-            return A, index, L, c1
+            return A, index, L
 
     raise ValueError("no solution found")
 
 
 def solve(c0: int, G: int) -> bytes:
     k = G.bit_length() - 1
-    A, index, L, c1 = search_matrix(G)
-    print(f"A: A{A.shape} index: index[{len(index)}] L: {L} c1: {c1:08x}")
+    A, index, L = search_matrix(G)
+    print(f"A: A{A.shape}, L: {L}")
+
+    m1 = "A" * L  # ベースとなるメッセージ
+    c1 = crc(m1.encode(), G)  # ベースとなるCRC値
 
     target = GF2([(c1 ^ c0) >> i & 1 for i in range(k)])
     x = np.linalg.solve(A, target)
-    m1 = int.from_bytes(("A" * L).encode(), "big")
+    m1_int = int.from_bytes(m1.encode(), "big")
     for i, flip in zip(index, x):
         if flip:
-            m1 ^= 1 << i
-    return m1.to_bytes(L, "big")
+            m1_int ^= 1 << i
+    return m1_int.to_bytes(L, "big")
 
 
 def challenge(conn: remote, g: int):
