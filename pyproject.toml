@@ -14,4 +14,5 @@ dependencies = [
     "fpylll>=0.6.4",
     "pycryptodome>=3.23.0",
     "python-dotenv>=1.2.2",
+    "scipy>=1.17.1",
 ]
