@@ -6,8 +6,7 @@ https://alpacahack.com/daily-bside/challenges/resume-maker
 
 次のような PHP サーバーが動いています。
 
-‐ フォームにユーザー情報を入力して送信すると `base64_encode(serialize($user))` でシリアライズされたユーザー情報が表示される
-
+- フォームにユーザー情報を入力して送信すると `base64_encode(serialize($user))` でシリアライズされたユーザー情報が表示される
 - フォームにシリアライズされたユーザー情報を入力して送信すると、サーバーは `unserialize(base64_decode($input))` でデコードされたユーザー情報を表示する
 
 `unserialize` させるオブジェクトを工夫して `/flag.txt` の内容を表示させる問題です。
