@@ -17,6 +17,7 @@ sudo apt-get install -y \
   cmake \
   command-not-found \
   gdb \
+  inetutils-ping \
   meson \
   netcat-openbsd \
   ninja-build \
