@@ -25,7 +25,7 @@ def check(regexp: str):
 
 def binSearch(prefix: str):
     l = 0
-    r = len(charset) - 1
+    r = len(charset)
     while l + 1 < r:
         m = (l + r) // 2
         chars = "".join(charset[0:m])
