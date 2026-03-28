@@ -13,7 +13,7 @@ https://alpacahack.com/daily/challenges/hit-and-miss
 分かっている部分に続く次の文字がどれであるかを二分探索で特定していきます。
 
 使用可能な文字列すべてを含む配列 `charset[]` を作成し、`Alpaca\\{[' + "".join(charset[0:m]) + ']'` のような正規表現をサーバーに送ります。
-`charset[0:m]` だとマッチするが `charset[0:m+1]` だとマッチしない場合、次の文字は `charset[m]` であることが分かります。
+`charset[0:m]` だとマッチしないが `charset[0:m+1]` だとマッチする場合、次の文字は `charset[m]` であることが分かります。
 
 ## 回答に使用したコード
 
