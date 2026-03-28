@@ -88,6 +88,7 @@ async function buildChallengeContext(
   const info = await fetchAlpacaHackChallengeInfo(challengeUrl);
   const pageUrl = info.pageUrl ?? challengeUrl;
   const url = new URL(pageUrl);
+  url.search = ""; // Ignore query parameters for slug/type inference.
   const slug = extractSlug(url);
   const type = inferType(url);
   const date = info.released.replaceAll("-", "");
@@ -103,7 +104,7 @@ async function buildChallengeContext(
   const challengeDir = path.join(`${yyyy}-${mm}`, `${dd}-${type}-${slug}`);
   const readmePath = path.join(challengeDir, "README.md");
   return {
-    challengeUrl: pageUrl,
+    challengeUrl: url.toString(),
     type,
     date,
     branchName,
