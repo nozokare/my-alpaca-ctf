@@ -14,4 +14,7 @@ __pycache__
 # git
 !.gitkeep
 
+# gdb
+.gdb_history
+
 .tmp/
