@@ -176,7 +176,7 @@ function extractChallengeExtras(
   const chips = [...infoBox.querySelectorAll("span.MuiChip-label")].map(
     (chip) => getNodeText(chip),
   );
-  const solvesText = chips.find((text) => /\d+\s+solves/i.test(text));
+  const solvesText = chips.find((text) => /\d+\s+solves?/i.test(text));
   const metaChips = chips.filter((text) => !/solves/i.test(text));
   const category = metaChips[0];
   const difficulty = metaChips[1];
