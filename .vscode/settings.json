@@ -1,7 +1,9 @@
 {
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.biome": "explicit",
-    "source.fixAll.prettier": "explicit",
     "source.fixAll.pylance": "explicit"
-  }
+  },
+  "biome.lsp.bin": "./node_modules/.bin/biome"
 }
