@@ -32,6 +32,7 @@ Stripped:   No
   </tr>
   <tr>
     <td>↑低位(0000)</td>
+    <td colspan="2"></td>
   </tr>
   <tr>
     <td align="right">rsp→</td>
@@ -116,8 +117,7 @@ Stripped:   No
   </tr>
   <tr>
     <td>↓高位(FFFF)</td>
-    <td></td>
-    <td></td>
+    <td colspan="2"></td>
   </tr>
 </table>
 
