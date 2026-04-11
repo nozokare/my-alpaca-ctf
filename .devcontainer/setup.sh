@@ -43,9 +43,7 @@ r2pm -U
 r2pm -i r2ghidra
 
 # Setup gdb config
-if [ ! -f ~/.gdbinit ]; then
-  echo "set auto-load safe-path /workspaces/alpaca-ctf" > ~/.gdbinit
-fi
+cp .devcontainer/.gdbinit ~/
 
 # Setup Workspace
 npm install
