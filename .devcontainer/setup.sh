@@ -52,3 +52,8 @@ uv sync
 
 # Add Utility functions to .bashrc
 cat .devcontainer/.bashrc | sed "s|__PWD__|$PWD|" >> ~/.bashrc
+
+# Create Dummy Flag
+echo "Alpaca{this is dummy flag located at /flag.txt}" | sudo tee /flag.txt > /dev/null
+sudo chmod 644 /flag.txt
+
