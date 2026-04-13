@@ -43,9 +43,7 @@ r2pm -U
 r2pm -i r2ghidra
 
 # Setup gdb config
-if [ ! -f ~/.gdbinit ]; then
-  echo "set auto-load safe-path /workspaces/alpaca-ctf" > ~/.gdbinit
-fi
+cp .devcontainer/.gdbinit ~/
 
 # Setup Workspace
 npm install
@@ -54,3 +52,8 @@ uv sync
 
 # Add Utility functions to .bashrc
 cat .devcontainer/.bashrc | sed "s|__PWD__|$PWD|" >> ~/.bashrc
+
+# Create Dummy Flag
+echo "Alpaca{this is dummy flag located at /flag.txt}" | sudo tee /flag.txt > /dev/null
+sudo chmod 644 /flag.txt
+
