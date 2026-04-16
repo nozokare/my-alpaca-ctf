@@ -4,9 +4,7 @@
   "biome.lsp.bin": "./node_modules/.bin/biome",
 
   "[typescript]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.biome": "explicit"
-    }
+    "editor.codeActionsOnSave": {}
   },
 
   "[python]": {
