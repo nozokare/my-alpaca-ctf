@@ -30,6 +30,7 @@ sudo apt-file update
 version=$(curl -sL https://api.github.com/repos/radareorg/radare2/releases/latest | jq -r '.tag_name')
 install_dir="/mnt/local/radare2-${version}"
 if [ ! -d "$install_dir" ]; then
+  mkdir -p $install_dir
   url="https://github.com/radareorg/radare2/releases/download/${version}/radare2-${version}.tar.xz"
   curl -Ls $url | tar xJ -C $install_dir --strip-components=1
   $install_dir/sys/install.sh
