@@ -1,0 +1,181 @@
+[
+  {
+    "value": 361445,
+    "effect": "posix_spawn(rsp+0xc, \"/bin/sh\", 0, rbx, rsp+0x50, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "{\"sh\", \"-c\", rip+0x17301e, r12, ...} is a valid argv",
+      "rbx == NULL || (u16)[rbx] == NULL"
+    ]
+  },
+  {
+    "value": 361452,
+    "effect": "posix_spawn(rsp+0xc, \"/bin/sh\", 0, rbx, rsp+0x50, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "rax == NULL || {\"sh\", rax, rip+0x17301e, r12, ...} is a valid argv",
+      "rbx == NULL || (u16)[rbx] == NULL"
+    ]
+  },
+  {
+    "value": 361459,
+    "effect": "posix_spawn(rsp+0xc, \"/bin/sh\", 0, rbx, rsp+0x50, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "rcx == NULL || {rcx, rax, rip+0x17301e, r12, ...} is a valid argv",
+      "rbx == NULL || (u16)[rbx] == NULL"
+    ]
+  },
+  {
+    "value": 361466,
+    "effect": "posix_spawn(rsp+0xc, \"/bin/sh\", rdx, rbx, rsp+0x50, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "rcx == NULL || {rcx, (u64)xmm1, rip+0x17301e, r12, ...} is a valid argv",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0",
+      "rbx == NULL || (u16)[rbx] == NULL"
+    ]
+  },
+  {
+    "value": 361471,
+    "effect": "posix_spawn(rsp+0xc, \"/bin/sh\", rdx, rbx, rsp+0x50, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "(u64)xmm0 == NULL || {(u64)xmm0, (u64)xmm1, rip+0x17301e, r12, ...} is a valid argv",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0",
+      "rbx == NULL || (u16)[rbx] == NULL"
+    ]
+  },
+  {
+    "value": 361479,
+    "effect": "posix_spawn(rdi, \"/bin/sh\", rdx, rcx, rsp+0x50, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "(u64)xmm0 == NULL || {(u64)xmm0, (u64)xmm1, rip+0x17301e, r12, ...} is a valid argv",
+      "rdi == NULL || writable: rdi",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0",
+      "rcx == NULL || (u16)[rcx] == NULL"
+    ]
+  },
+  {
+    "value": 361486,
+    "effect": "posix_spawn(rdi, \"/bin/sh\", rdx, rcx, rsp+0x50, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "(u64)xmm0 == NULL || {(u64)xmm0, (u64)xmm1, rax, r12, ...} is a valid argv",
+      "rdi == NULL || writable: rdi",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0",
+      "rcx == NULL || (u16)[rcx] == NULL"
+    ]
+  },
+  {
+    "value": 361490,
+    "effect": "posix_spawn(rdi, \"/bin/sh\", rdx, rcx, rsp+0x50, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "(u64)xmm0 == NULL || {(u64)xmm0, (u64)(xmm0 >> 64), rax, r12, ...} is a valid argv",
+      "rdi == NULL || writable: rdi",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0",
+      "rcx == NULL || (u16)[rcx] == NULL"
+    ]
+  },
+  {
+    "value": 361495,
+    "effect": "posix_spawn(rdi, \"/bin/sh\", rdx, rcx, r8, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x68",
+      "[r8] == NULL || r8 is a valid argv",
+      "rdi == NULL || writable: rdi",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0",
+      "rcx == NULL || (u16)[rcx] == NULL"
+    ]
+  },
+  {
+    "value": 361500,
+    "effect": "posix_spawn(rdi, \"/bin/sh\", rdx, rcx, r8, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x60",
+      "[r8] == NULL || r8 is a valid argv",
+      "rdi == NULL || writable: rdi",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0",
+      "rcx == NULL || (u16)[rcx] == NULL"
+    ]
+  },
+  {
+    "value": 361505,
+    "effect": "posix_spawn(rdi, \"/bin/sh\", rdx, rcx, r8, environ)",
+    "constraints": [
+      "rsp & 0xf == 0",
+      "writable: rsp+0x70",
+      "[r8] == NULL || r8 is a valid argv",
+      "rdi == NULL || writable: rdi",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0",
+      "rcx == NULL || (u16)[rcx] == NULL"
+    ]
+  },
+  {
+    "value": 980174,
+    "effect": "execve(\"/bin/sh\", rbp-0x50, r12)",
+    "constraints": [
+      "writable: rbp-0x48",
+      "rbx == NULL || {\"/bin/sh\", rbx, NULL} is a valid argv",
+      "[r12] == NULL || r12 == NULL || r12 is a valid envp"
+    ]
+  },
+  {
+    "value": 980267,
+    "effect": "execve(\"/bin/sh\", rbp-0x50, [rbp-0x78])",
+    "constraints": [
+      "writable: rbp-0x50",
+      "rax == NULL || {\"/bin/sh\", rax, NULL} is a valid argv",
+      "[[rbp-0x78]] == NULL || [rbp-0x78] == NULL || [rbp-0x78] is a valid envp"
+    ]
+  },
+  {
+    "value": 1118682,
+    "effect": "posix_spawn(rsp+0x64, \"/bin/sh\", [rsp+0x48], 0, rsp+0x70, [rsp+0xf0])",
+    "constraints": [
+      "[rsp+0x70] == NULL || {[rsp+0x70], [rsp+0x78], [rsp+0x80], [rsp+0x88], ...} is a valid argv",
+      "[[rsp+0xf0]] == NULL || [rsp+0xf0] == NULL || [rsp+0xf0] is a valid envp",
+      "[rsp+0x48] == NULL || (s32)[[rsp+0x48]+0x4] <= 0"
+    ]
+  },
+  {
+    "value": 1118690,
+    "effect": "posix_spawn(rsp+0x64, \"/bin/sh\", [rsp+0x48], 0, rsp+0x70, r9)",
+    "constraints": [
+      "[rsp+0x70] == NULL || {[rsp+0x70], [rsp+0x78], [rsp+0x80], [rsp+0x88], ...} is a valid argv",
+      "[r9] == NULL || r9 == NULL || r9 is a valid envp",
+      "[rsp+0x48] == NULL || (s32)[[rsp+0x48]+0x4] <= 0"
+    ]
+  },
+  {
+    "value": 1118695,
+    "effect": "posix_spawn(rsp+0x64, \"/bin/sh\", rdx, 0, rsp+0x70, r9)",
+    "constraints": [
+      "[rsp+0x70] == NULL || {[rsp+0x70], [rsp+0x78], [rsp+0x80], [rsp+0x88], ...} is a valid argv",
+      "[r9] == NULL || r9 == NULL || r9 is a valid envp",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0"
+    ]
+  },
+  {
+    "value": 1118705,
+    "effect": "posix_spawn(rdi, \"/bin/sh\", rdx, 0, r8, r9)",
+    "constraints": [
+      "[r8] == NULL || r8 is a valid argv",
+      "[r9] == NULL || r9 == NULL || r9 is a valid envp",
+      "rdi == NULL || writable: rdi",
+      "rdx == NULL || (s32)[rdx+0x4] <= 0"
+    ]
+  }
+]
