@@ -43,6 +43,9 @@ fi
 r2pm -U
 r2pm -i r2ghidra
 
+# Install pwndbg
+curl --proto '=https' --tlsv1.2 -LsSf 'https://install.pwndbg.re' | sh -s -- -t pwndbg-gdb
+
 # Setup gdb config
 cp .devcontainer/.gdbinit ~/
 
