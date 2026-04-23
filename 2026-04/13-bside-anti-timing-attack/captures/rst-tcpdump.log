@@ -1,0 +1,11 @@
+16:04:55.521296 IP local.45772 > remote.30533: Flags [S], seq 3226768471, win 64240, options [mss 1460,sackOK,TS val 441445157 ecr 0,nop,wscale 7], length 0
+16:04:55.694532 IP remote.30533 > local.45772: Flags [S.], seq 1639658018, ack 3226768472, win 29184, options [mss 1460,sackOK,TS val 709487569 ecr 441445157,nop,wscale 7], length 0
+16:04:55.694705 IP local.45772 > remote.30533: Flags [.], ack 1, win 502, options [nop,nop,TS val 441445330 ecr 709487569], length 0
+16:04:55.872570 IP remote.30533 > local.45772: Flags [P.], seq 1:7, ack 1, win 4096, options [nop,nop,TS val 709487744 ecr 441445330], length 6
+16:04:55.872635 IP local.45772 > remote.30533: Flags [.], ack 7, win 502, options [nop,nop,TS val 441445508 ecr 709487744], length 0
+16:04:55.872964 IP local.45772 > remote.30533: Flags [P.], seq 1:9, ack 7, win 502, options [nop,nop,TS val 441445508 ecr 709487744], length 8
+16:04:55.875285 IP remote.30533 > local.45772: Flags [.], ack 9, win 4095, options [nop,nop,TS val 709487747 ecr 441445508], length 0
+16:04:56.379852 IP remote.30533 > local.45772: Flags [F.], seq 7, ack 9, win 4096, options [nop,nop,TS val 709488244 ecr 441445508], length 0
+16:04:56.213745 IP local.45772 > remote.30533: Flags [.], ack 8, win 502, options [nop,nop,TS val 441446057 ecr 709488244], length 0
+16:04:57.666411 IP local.45772 > remote.30533: Flags [F.], seq 9, ack 8, win 502, options [nop,nop,TS val 441447509 ecr 709488244], length 0
+16:04:57.667438 IP remote.30533 > local.45772: Flags [.], ack 10, win 4095, options [nop,nop,TS val 709489739 ecr 441446057], length 0
