@@ -104,6 +104,6 @@ s0 = (s1 - b) * pow(a, -1, p) % p
 decrypt_flag(flag_enc, (p, a, b, s0))
 ```
 
-## 回答に使用したコード
+## 解答に使用したコード
 
 - [solve.ipynb](solve.ipynb)

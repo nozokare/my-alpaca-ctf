@@ -77,7 +77,7 @@ app.use(express.json());
 - `{ "$exists": true }`
 - `{ "$type": "string" }`
 
-## 回答に使用したコード
+## 解答に使用したコード
 
 ```ts
 const body = {

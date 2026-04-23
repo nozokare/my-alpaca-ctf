@@ -162,7 +162,7 @@ Symbol "win" is at 0x4011f6 in a file compiled without debugging.
 Symbol "strcmp@got.plt" is at 0x404028 in a file compiled without debugging.
 ```
 
-## 回答に使用した入力
+## 解答に使用した入力
 
 ```text:input.hex
 00 00 00 00  00 00 00 00

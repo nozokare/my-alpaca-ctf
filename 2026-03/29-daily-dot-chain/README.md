@@ -84,7 +84,7 @@ const escaped = code.replace(/[^.0-9A-Za-z]/g, (match) => {
 console.log("Function`" + escaped + "```");
 ````
 
-## 回答に使用した入力
+## 解答に使用した入力
 
 エスケープしたコード: `process.execve("/usr/bin/sh")`
 

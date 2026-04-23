@@ -2,9 +2,9 @@
 
 https://alpacahack.com/daily/challenges/fake-shuffle-proof
 
-## 回答に使用した入力
+## 解答に使用した入力
 
-手入力・コピペで回答しました。
+手入力・コピペで解答しました。
 
 ```
 > 1

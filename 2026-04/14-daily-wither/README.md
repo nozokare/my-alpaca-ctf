@@ -27,7 +27,7 @@ $$P_i = C_i^{(1)}\ |\ C_i^{(2)}\ |\ \cdots\ |\ C_i^{(n)}$$
 
 で $P_i$ を得ることができます。
 
-## 回答に使用したコード
+## 解答に使用したコード
 
 ```python
 from pwn import remote

@@ -87,7 +87,7 @@ print("".join(dic.get(c, "?") for c in cs))
 
 結局アルパイエって何者？？
 
-## 回答に使用したコード
+## 解答に使用したコード
 
 - [solve.py](solve.py)
 

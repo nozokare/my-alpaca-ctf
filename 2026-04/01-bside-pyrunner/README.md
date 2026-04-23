@@ -35,7 +35,7 @@ for file in $(find / -name "*.py"); do echo $file; python $file 2> /dev/null; do
 
 REPL を起動すれば自由に Python コードを実行できるため、フラグを読み取ることができます。
 
-## 回答に使用した入力
+## 解答に使用した入力
 
 ```
 /usr/local/lib/python3.14/code.py

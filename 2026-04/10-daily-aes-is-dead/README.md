@@ -67,6 +67,6 @@ Image.frombytes("RGBA", (7124 // 4, 124), data[header_len:]).transpose(Image.FLI
 
 色は無茶苦茶ですが元画像で白/黒で塗分けられていた領域のパターンがはっきり現れ、フラグのテキストが読み取れました。
 
-## 回答に使用したコード
+## 解答に使用したコード
 
 - [solve.ipynb](solve.ipynb)
