@@ -69,8 +69,6 @@ $$
 
 ## 解答に使用したコード
 
-`untwist` は $s'$ から $s_{<19937>}$ を求める処理で、これを `twist` しなおして $s'_{<31>}$ が一致するかを確認しています。
-
 ```python
 from pwn import remote
 from mt19937 import twist, untwist, untemper, warmup
@@ -99,6 +97,12 @@ for r in range(128):
 print(conn.recvall().decode())
 ```
 
-"The past or the future?" を解くときに書いた巨大な表現行列 $A$ を求めて処理する実装を流用していますが、計算量的には `twist` 処理の詳細から逆算して `state[0]` だけ計算するほうが効率的でシンプルになると思います。
+"The past or the future?" を解くときに書いた巨大な表現行列 $A$ を求めて処理する実装を流用しています。
+
+- [mt19937.py](mt19937.py)
+
+`untwist` は $s'$ から $s_{<19937>}$ を求める処理で、これを `twist` しなおして $s'_{<31>}$ が一致するかを確認しています。
+
+計算量的には `twist` 処理の詳細から逆算して `state[0]` だけ計算するほうが効率的でシンプルになると思います。
 
 参考: [過去の内部状態の復元](https://zenn.dev/hk_ilohas/articles/mersenne-twister-previous-state#%E9%81%8E%E5%8E%BB%E3%81%AE%E5%86%85%E9%83%A8%E7%8A%B6%E6%85%8B%E3%81%AE%E5%BE%A9%E5%85%83)
