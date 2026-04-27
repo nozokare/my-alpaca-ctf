@@ -23,3 +23,6 @@ dependencies = [
 
 [tool.ruff.lint]
 ignore = ["E402"]
+
+[tool.uv]
+exclude-newer = "1 week"

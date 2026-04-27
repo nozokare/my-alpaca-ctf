@@ -7,6 +7,10 @@ sudo chown $(id -u):$(id -g) /mnt/local
 curl -LsSf https://astral.sh/uv/install.sh | sh
 . "/mnt/local/uv/env"
 
+# Set Security Config
+npm config set min-release-age 7
+npm config set audit true
+
 # Update NPM
 npm install -g npm
 
