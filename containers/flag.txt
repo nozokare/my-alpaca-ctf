@@ -1,0 +1,1 @@
+Alpaca{this is dummy flag located at /flag.txt}

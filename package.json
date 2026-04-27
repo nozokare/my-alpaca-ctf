@@ -1,7 +1,12 @@
 {
   "scripts": {
     "alpaca:new": "node ./scripts/new-challenge.ts -i",
-    "sage:jupyter": "dotenvx run -- docker run --rm -p8990:8888 -eJUPYTER_TOKEN sagemath/sagemath:latest sage-jupyter",
+    "sage:jupyter": "scripts/run-sage-jupyter.sh --mount $INIT_CWD",
+    "sage:run": "scripts/run-container.sh --rm -it sagemath/sagemath --mount $INIT_CWD -- sage",
+    "radare2:run": "scripts/run-container.sh --rm -it radare2 --allow-no-aslr --mount $INIT_CWD -- r2",
+    "radare2:build": "scripts/build-container.sh radare2",
+    "pwndbg:run": "scripts/run-container.sh --rm -it pwndbg --allow-no-aslr --mount $INIT_CWD -- pwndbg",
+    "pwndbg:build": "scripts/build-container.sh pwndbg",
     "postinstall": "lefthook install"
   },
   "dependencies": {
