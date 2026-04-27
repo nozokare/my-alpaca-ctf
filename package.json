@@ -7,6 +7,7 @@
     "radare2:build": "scripts/build-container.sh radare2",
     "pwndbg:run": "scripts/run-container.sh --rm -it pwndbg --allow-no-aslr --mount $INIT_CWD -- pwndbg",
     "pwndbg:build": "scripts/build-container.sh pwndbg",
+    "git:rebase-branches": "scripts/rebase-branches.sh",
     "postinstall": "lefthook install"
   },
   "dependencies": {
