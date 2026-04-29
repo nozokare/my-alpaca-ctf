@@ -18,11 +18,13 @@ RUN useradd -ms /bin/bash user \
 
 COPY flag.txt /flag.txt
 
-RUN git clone --depth=1 https://github.com/radareorg/radare2.git /opt/radare2 \
-  && /opt/radare2/sys/install.sh \
+USER user
+WORKDIR /home/user
+
+RUN git clone --depth=1 https://github.com/radareorg/radare2.git \
+  && sudo ./radare2/sys/install.sh \
   && r2pm -U \
   && r2pm -ci r2ghidra
 
-USER user
 WORKDIR /workdir
 CMD ["/bin/bash"]
