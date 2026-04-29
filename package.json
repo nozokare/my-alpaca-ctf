@@ -7,6 +7,9 @@
     "radare2:build": "scripts/build-container.sh radare2",
     "pwndbg:run": "scripts/run-container.sh --rm -it pwndbg --allow-no-aslr --mount $INIT_CWD -- pwndbg",
     "pwndbg:build": "scripts/build-container.sh pwndbg",
+    "one_gadget:run": "scripts/run-container.sh --rm -it one_gadget --mount $INIT_CWD -- one_gadget",
+    "one_gadget:build": "scripts/build-container.sh one_gadget",
+    "one_gadget:copy_libc": "scripts/copy-libc.sh --mount $INIT_CWD",
     "git:rebase-branches": "scripts/rebase-branches.sh",
     "postinstall": "lefthook install"
   },
