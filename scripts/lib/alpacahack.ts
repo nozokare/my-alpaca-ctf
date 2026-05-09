@@ -41,63 +41,31 @@ export function parseAlpacaHackChallengeHtml(
   const dom = new JSDOM(html, pageUrl ? { url: pageUrl } : undefined);
   const { document } = dom.window;
 
-  const titleElement = document.querySelector("h2.MuiTypography-h2");
+  const mainStack = document.querySelector("main.MuiStack-root");
+  if (!(mainStack instanceof dom.window.HTMLElement)) {
+    throw new Error("challenge main stack not found");
+  }
+
+  const titleElement = mainStack.querySelector("h1");
   if (!(titleElement instanceof dom.window.HTMLHeadingElement)) {
     throw new Error("challenge title element not found");
   }
 
-  const headerBox = titleElement.parentElement;
-  if (!(headerBox instanceof dom.window.HTMLDivElement)) {
-    throw new Error("challenge header container not found");
-  }
-
-  const metaElement = headerBox.querySelector(":scope > p");
+  const metaElement = mainStack.querySelector("h1 ~ p");
   if (!(metaElement instanceof dom.window.HTMLParagraphElement)) {
     throw new Error("challenge metadata element not found");
   }
 
-  const meta = extractHeaderMeta(metaElement);
-  const mainStack = titleElement.closest("div.MuiStack-root");
-  if (!(mainStack instanceof dom.window.HTMLDivElement)) {
-    throw new Error("challenge main stack not found");
-  }
-
-  const contentCard = elementChildren(mainStack).find(
-    (element) =>
-      element.matches("div") && element.querySelector('a[aria-label="Solves"]'),
-  );
-  if (!(contentCard instanceof dom.window.HTMLDivElement)) {
-    throw new Error("challenge content card not found");
-  }
-
-  const contentColumn = elementChildren(contentCard).find(
-    (element) =>
-      element.matches("div") &&
-      element.querySelector('form[action*="/submit-flag"]'),
-  );
-  if (!(contentColumn instanceof dom.window.HTMLDivElement)) {
-    throw new Error("challenge content column not found");
-  }
-
-  const infoBox = elementChildren(mainStack).find(
-    (element) =>
-      element.matches("div") &&
-      element.querySelector('a[href^="/users/"]') &&
-      element.querySelector("span.MuiChip-label"),
-  );
-  if (!(infoBox instanceof dom.window.HTMLDivElement)) {
-    throw new Error("challenge info box not found");
-  }
-
-  const sectionRoot = elementChildren(contentColumn)[0];
-  if (!(sectionRoot instanceof dom.window.HTMLDivElement)) {
+  const sectionRoot = mainStack.querySelector("article");
+  if (!(sectionRoot instanceof dom.window.HTMLElement)) {
     throw new Error("challenge section root not found");
   }
 
+  const meta = extractHeaderMeta(metaElement);
   const description = extractDescription(sectionRoot);
   const details = extractDetails(sectionRoot);
-  const attachments = extractAttachments([contentColumn], pageUrl);
-  const extra = extractChallengeExtras(infoBox, pageUrl);
+  const attachments = extractAttachments(sectionRoot, pageUrl);
+  const extra = extractChallengeExtras(mainStack, pageUrl);
 
   return {
     ...(pageUrl ? { pageUrl } : {}),
@@ -119,48 +87,14 @@ function extractHeaderMeta(metaElement: HTMLParagraphElement): {
   topic: string;
   released: string;
 } {
-  let currentLabel: "topic" | "released" | null = null;
-  let topic = "";
-  let releasedText = "";
+  const matches = getNodeText(metaElement).match(
+    /^Topic:\s*(.+?)Released:\s*(.+)$/,
+  );
 
-  for (const node of metaElement.childNodes) {
-    if (node.nodeType === node.ELEMENT_NODE) {
-      const element = node as HTMLElement;
-      const label = normalizeLabel(element.textContent ?? "");
-      if (label === "topic") {
-        currentLabel = "topic";
-      } else if (label === "released") {
-        currentLabel = "released";
-      }
-      continue;
-    }
+  const topic = matches?.at(1)?.trim() || "";
+  const released = matches?.at(2)?.trim() || "";
 
-    if (node.nodeType !== node.TEXT_NODE || currentLabel === null) {
-      continue;
-    }
-
-    const text = normalizeSpace(node.textContent ?? "");
-    if (!text) {
-      continue;
-    }
-
-    if (currentLabel === "topic") {
-      topic = `${topic} ${text}`.trim();
-    } else {
-      releasedText = `${releasedText} ${text}`.trim();
-    }
-  }
-
-  if (!topic || !releasedText) {
-    throw new Error("failed to parse challenge metadata");
-  }
-
-  const released = new Date(releasedText);
-  if (Number.isNaN(released.valueOf())) {
-    throw new Error(`failed to parse released date: ${releasedText}`);
-  }
-
-  return { topic, released: formatDate(released) };
+  return { topic, released: formatDate(new Date(released)) };
 }
 
 function extractChallengeExtras(
@@ -214,64 +148,48 @@ function extractAuthorName(authorLink: Element): string {
   return getNodeText(authorLink);
 }
 
-function extractDescription(section?: Element): string {
-  if (!section) {
-    return "";
-  }
-
-  const paragraph = section.querySelector(":scope > p");
-  const text = paragraph ? getNodeText(paragraph) : "";
-  if (!text) {
-    return "";
-  }
-
-  return text;
+function extractDescription(section: Element): string {
+  return section.querySelector(":scope > p")?.textContent || "";
 }
 
-function extractDetails(section?: Element): string[] {
-  if (!section) {
-    return [];
-  }
-
+function extractDetails(section: Element): string[] {
   return [...section.querySelectorAll(":scope > details")]
     .map((element) => getNodeText(element))
     .filter((text) => text.length > 0);
 }
 
 function extractAttachments(
-  sections: Element[],
+  section: Element,
   pageUrl?: string,
 ): AlpacaHackAttachment[] {
   const pageOrigin = getOrigin(pageUrl);
   const attachments: AlpacaHackAttachment[] = [];
 
-  for (const section of sections) {
-    for (const anchor of section.querySelectorAll("a[href]")) {
-      const href = anchor.getAttribute("href");
-      if (!href) {
-        continue;
-      }
+  for (const anchor of section.querySelectorAll("a[href]")) {
+    const href = anchor.getAttribute("href");
+    if (!href) {
+      continue;
+    }
 
-      if (
-        !anchor.hasAttribute("download") &&
-        !looksLikeAttachment(anchor, href, pageOrigin)
-      ) {
-        continue;
-      }
+    if (
+      !anchor.hasAttribute("download") &&
+      !looksLikeAttachment(anchor, href, pageOrigin)
+    ) {
+      continue;
+    }
 
-      const url = toAbsoluteUrl(href, pageUrl);
-      if (!url) {
-        continue;
-      }
+    const url = toAbsoluteUrl(href, pageUrl);
+    if (!url) {
+      continue;
+    }
 
-      const name = getNodeText(anchor);
-      if (!name) {
-        continue;
-      }
+    const name = getNodeText(anchor);
+    if (!name) {
+      continue;
+    }
 
-      if (!attachments.some((attachment) => attachment.url === url)) {
-        attachments.push({ name, url });
-      }
+    if (!attachments.some((attachment) => attachment.url === url)) {
+      attachments.push({ name, url });
     }
   }
 
@@ -340,10 +258,6 @@ function normalizeBaseUrl(url?: string): string {
   return "https://alpacahack.com";
 }
 
-function elementChildren(parent: Element): Element[] {
-  return [...parent.children].filter((child) => child.tagName !== "STYLE");
-}
-
 function getNodeText(node: Element): string {
   const ownerDocument = node.ownerDocument;
   const walker = ownerDocument.createTreeWalker(
@@ -365,10 +279,6 @@ function getNodeText(node: Element): string {
   }
 
   return normalizeSpace(parts.join(" "));
-}
-
-function normalizeLabel(text: string): string {
-  return normalizeSpace(text).replace(/:$/, "").toLowerCase();
 }
 
 function normalizeSpace(text: string): string {
