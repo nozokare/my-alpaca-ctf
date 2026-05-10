@@ -1,0 +1,20 @@
+# fmt: off
+enc = [
+    0x31, 0x54, 0x6c, 0x2f, 0x04, 0x52, 0x22, 0x41, 0x3f, 0x59,
+    0x27, 0x45, 0x67, 0x79, 0x1a, 0x4e, 0x78, 0x2d, 0x19
+]
+# fmt: on
+
+
+def step(s):
+    bit = ((s >> 0) ^ (s >> 2) ^ (s >> 3) ^ (s >> 5)) & 1
+    return (s >> 1) | (bit << 15)
+
+
+state = 0xACE1
+buf = []
+for e in enc:
+    state = step(state)
+    buf.append((state & 0x7F) ^ e)
+
+print(bytes(buf).decode())
