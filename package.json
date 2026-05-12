@@ -1,8 +1,10 @@
 {
   "scripts": {
     "alpaca:new": "node ./scripts/new-challenge.ts -i",
+    "jupyter:kernel": "node ./scripts/docker-ipykernel.ts",
     "sage:jupyter": "scripts/run-sage-jupyter.sh --mount $INIT_CWD",
     "sage:run": "scripts/run-container.sh --rm -it sagemath/sagemath --mount $INIT_CWD -- sage",
+    "sage:install-kernel": "node ./scripts/docker-ipykernel.ts add --image sagemath/sagemath --python 'sage --python' --kernel sagemath --display-name 'SageMath(Docker)' --name sagemath",
     "radare2:run": "scripts/run-container.sh --rm -it radare2 --allow-no-aslr --mount $INIT_CWD -- r2",
     "radare2:build": "scripts/build-container.sh radare2",
     "pwndbg:run": "scripts/run-container.sh --rm -it pwndbg --allow-no-aslr --mount $INIT_CWD -- pwndbg",
@@ -11,6 +13,8 @@
     "one_gadget:build": "scripts/build-container.sh one_gadget",
     "one_gadget:copy_libc": "scripts/copy-libc.sh --mount $INIT_CWD",
     "pypy:run": "scripts/run-container.sh --rm -it pypy:3 --mount $INIT_CWD -- pypy",
+    "pypy:build": "scripts/build-container.sh pypy-jupyter",
+    "pypy:install-kernel": "node ./scripts/docker-ipykernel.ts add --image pypy-jupyter --kernel python3 --display-name 'PyPy3(Docker)' --name pypy3",
     "git:rebase-branches": "scripts/rebase-branches.sh main 'daily-*' 'bside-*'",
     "postinstall": "lefthook install"
   },

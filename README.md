@@ -20,7 +20,8 @@
 
 問題を解くためのツール用の Docker イメージをビルド・起動するための npm scripts を用意しています。
 
-- [sage](https://www.sagemath.org/)
+- [SageMath](https://www.sagemath.org/)
+- [PyPy](https://www.pypy.org/)
 - [radare2](https://rada.re/n/radare2.html)
 - [pwndbg](https://pwndbg.com/)
 
@@ -28,18 +29,14 @@
 
 ### SageMath
 
-#### Jupyter Notebook を起動
+- `npm run sage:run ./file.sage`: `/workdir` にマウントされた `./file.sage` を SageMath で実行
+- `npm run sage:install-kernel`: Jupyter カーネルとして Docker で SageMath を起動する構成をインストール
 
-`npm run sage:jupyter`
+### PyPy
 
-Port=8754 で Jupyter Notebook が起動します。
-`$REPO_ROOT/.env` に `JUPYTER_TOKEN=...` を設定しておくと、Jupyter Notebook にアクセスする際のトークンとして使用されます。
-
-VSCode で `.ipynb` ファイルを開き、`http://host.docker.internal:8754/?token={JUPYTER_TOKEN}` に接続すると SageMath カーネルを使用できます。
-
-#### SageMath を実行
-
-`npm run sage:run ./file.sage` で `/workdir` にマウントされた `./file.sage` を SageMath で実行できます。
+- `npm run pypy:build`: `containers/pypy-jupyter.dockerfile` をビルド
+- `npm run pypy:run ./file.py`: `/workdir` にマウントされた `./file.py` を PyPy で実行
+- `npm run pypy:install-kernel`: Jupyter カーネルとして Docker で PyPy を起動する構成をインストール
 
 ### radare2
 
