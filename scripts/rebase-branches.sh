@@ -5,9 +5,14 @@ set -euo pipefail
 usage() {
   cat <<'EOF'
 Usage:
-  ./scripts/rebase-branches.sh [options]
+  ./scripts/rebase-branches.sh [options] [base-branch] [branch-pattern ...]
 
-Rebase all local branches that are not yet merged into main onto main.
+Rebase local branches that are not yet merged into the base branch.
+
+Arguments:
+  base-branch         Base branch to rebase onto (default: main)
+  branch-pattern      Shell-style pattern to select branches (e.g. daily-*)
+                      If omitted, all unmerged local branches are selected.
 
 Options:
   -n, --dry-run   Show which branches would be rebased without doing anything
@@ -16,23 +21,34 @@ EOF
 }
 
 dry_run="false"
+positionals=()
 
-for arg in "$@"; do
-  case "$arg" in
+while [[ $# -gt 0 ]]; do
+  case "$1" in
     -n|--dry-run)
       dry_run="true"
+      shift
       ;;
     -h|--help)
       usage
       exit 0
       ;;
+    --)
+      shift
+      while [[ $# -gt 0 ]]; do
+        positionals+=("$1")
+        shift
+      done
+      ;;
     *)
-      echo "Unknown option: $arg" >&2
-      usage >&2
-      exit 1
+      positionals+=("$1")
+      shift
       ;;
   esac
 done
+
+base_branch="${positionals[0]:-main}"
+patterns=("${positionals[@]:1}")
 
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
 if [[ -z "$repo_root" ]]; then
@@ -47,25 +63,39 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
   exit 1
 fi
 
-if git show-ref --verify --quiet refs/heads/main; then
-  main_ref="main"
-elif git show-ref --verify --quiet refs/remotes/origin/main; then
-  main_ref="origin/main"
+if git show-ref --verify --quiet "refs/heads/${base_branch}"; then
+  base_ref="${base_branch}"
+elif git show-ref --verify --quiet "refs/remotes/origin/${base_branch}"; then
+  base_ref="origin/${base_branch}"
 else
-  echo "main branch not found (local main or origin/main)." >&2
+  echo "Base branch not found (local ${base_branch} or origin/${base_branch})." >&2
   exit 1
 fi
 
 original_branch="$(git branch --show-current)"
 
-mapfile -t branches < <(git branch --no-merged "$main_ref" --format '%(refname:short)')
+mapfile -t all_unmerged_branches < <(git branch --no-merged "$base_ref" --format '%(refname:short)')
+
+branches=()
+if [[ ${#patterns[@]} -eq 0 ]]; then
+  branches=("${all_unmerged_branches[@]}")
+else
+  for branch in "${all_unmerged_branches[@]}"; do
+    for pattern in "${patterns[@]}"; do
+      if [[ "$branch" == $pattern ]]; then
+        branches+=("$branch")
+        break
+      fi
+    done
+  done
+fi
 
 if [[ ${#branches[@]} -eq 0 ]]; then
-  echo "No unmerged branches found. Nothing to do."
+  echo "No unmerged branches matched. Nothing to do."
   exit 0
 fi
 
-echo "Branches to rebase onto ${main_ref}:"
+echo "Branches to rebase onto ${base_ref}:"
 for b in "${branches[@]}"; do
   echo "  $b"
 done
@@ -83,7 +113,7 @@ for branch in "${branches[@]}"; do
   echo "-------- $branch --------"
   git checkout "$branch"
 
-  if git rebase "$main_ref"; then
+  if git rebase "$base_ref"; then
     echo "  -> OK"
     succeeded+=("$branch")
   else
@@ -103,7 +133,7 @@ if [[ ${#failed[@]} -gt 0 ]]; then
   echo ""
   echo "The failed branches were left untouched. Resolve conflicts manually:" >&2
   for b in "${failed[@]}"; do
-    echo "  git checkout $b && git rebase $main_ref" >&2
+    echo "  git checkout $b && git rebase $base_ref" >&2
   done
   exit 1
 fi

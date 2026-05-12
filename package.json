@@ -11,7 +11,7 @@
     "one_gadget:build": "scripts/build-container.sh one_gadget",
     "one_gadget:copy_libc": "scripts/copy-libc.sh --mount $INIT_CWD",
     "pypy:run": "scripts/run-container.sh --rm -it pypy:3 --mount $INIT_CWD -- pypy",
-    "git:rebase-branches": "scripts/rebase-branches.sh",
+    "git:rebase-branches": "scripts/rebase-branches.sh main 'daily-*' 'bside-*'",
     "postinstall": "lefthook install"
   },
   "dependencies": {
