@@ -19,7 +19,3 @@ gsm() {
     cd __PWD__
     git switch main
 }
-
-if [ $PWD = __PWD__ ] && [ -d .venv ]; then
-    source .venv/bin/activate
-fi
