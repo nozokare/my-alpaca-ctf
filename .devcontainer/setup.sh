@@ -8,7 +8,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 . "/mnt/local/uv/env"
 
 # Set Security Config
-npm config set min-release-age 7
+npm config set min-release-age 14
 npm config set audit true
 
 # Update NPM
