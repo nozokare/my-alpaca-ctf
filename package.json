@@ -2,7 +2,6 @@
   "scripts": {
     "alpaca:new": "node ./scripts/new-challenge.ts -i",
     "jupyter:kernel": "node ./scripts/docker-ipykernel.ts",
-    "sage:jupyter": "scripts/run-sage-jupyter.sh --mount $INIT_CWD",
     "sage:run": "scripts/run-container.sh --rm -it sagemath/sagemath --mount $INIT_CWD -- sage",
     "sage:install-kernel": "node ./scripts/docker-ipykernel.ts add --image sagemath/sagemath --python 'sage --python' --kernel sagemath --display-name 'SageMath(Docker)' --name sagemath",
     "radare2:run": "scripts/run-container.sh --rm -it radare2 --allow-no-aslr --mount $INIT_CWD -- r2",
