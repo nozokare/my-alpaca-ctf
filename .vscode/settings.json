@@ -10,6 +10,9 @@
   "editor.formatOnSave": true,
   "biome.lsp.bin": "./node_modules/.bin/biome",
 
+  "git.autoRepositoryDetection": "subFolders",
+  "git.repositoryScanMaxDepth": 2,
+
   "[typescript]": {
     "editor.codeActionsOnSave": {}
   },
