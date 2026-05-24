@@ -22,7 +22,7 @@ $$ed + k(p-1) = \gcd(e, p-1)\ (=:g)$$
 
 となる $d$ を求めれば
 
-$$(m^e)^d = m^{g-k(p-1)} \equiv m^g\cdot (m^{p-1})^{-k} \equiv m^g \pmod{p}$$
+$$(m^e)^d = m^{g-k(p-1)} = m^g\cdot (m^{p-1})^{-k} \equiv m^g \pmod{p}$$
 
 が得られ､ $g = 1$ であれば $m$ を復号できます。
 
