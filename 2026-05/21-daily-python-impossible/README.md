@@ -6,8 +6,8 @@ https://alpacahack.com/daily/challenges/python-impossible
 
 サーバーに接続すると次のようなものを入力するように求められます。
 
-環境変数: `NAME=VALUE` 形式で 1 つ入力
-引数: 任意の文字列を 1 つ入力
+- 環境変数: `NAME=VALUE` 形式で 1 つ入力
+- 引数: 任意の文字列を 1 つ入力
 
 その後、入力した環境変数と引数で次の `chall.py` が実行されます。
 
