@@ -52,7 +52,7 @@ __global__ void compute(int a, int *b, long *c, int d, long *e)
 
 整数行列として扱う必要があるので SageMath で計算してみます。
 
-`long` の計算は正確には `Zmod(2**64)` 上ですが、`A` が 1 byte、`B` が 1 byte、`C` が 4 byte で mod が発生することがないので `ZZ` 上で計算します。
+`long` の計算は正確には `Zmod(2**64)` 上ですが、`A` が 4 byte、`B` が 1 byte、`C` が 4 byte で mod が発生することがないので `ZZ` 上で計算します。
 
 ```sage
 R = ZZ
