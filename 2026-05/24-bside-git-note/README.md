@@ -67,7 +67,7 @@ def safe_join(path: str) -> Path:
 
 git hooks の管理の面倒さを解消するために[最近導入された機能](https://github.blog/open-source/git/highlights-from-git-2-54/#h-config-based-hooks)が config-based hooks で、`git config` ベースで hooks を管理できるようになりました。
 
-例えば `.git/config` に次のような設定を書けば pre-commit フックで指定したコマンドが実行されるようになります。
+例えば `.git/config` に次のような設定を書けば pre-commit フックで指定したコマンドが実行されるようになりそうです。
 
 > ```ini
 > [hook "linter"]
