@@ -4,6 +4,7 @@
     "jupyter:kernel": "node ./scripts/docker-ipykernel.ts",
     "sage:run": "scripts/run-container.sh --rm -it sagemath/sagemath --mount $INIT_CWD -- sage",
     "sage:install-kernel": "node ./scripts/docker-ipykernel.ts add --image sagemath/sagemath --python 'sage --python' --kernel sagemath --display-name 'SageMath(Docker)' --name sagemath",
+    "cado-nfs:run": "scripts/run-container.sh --rm -it registry.gitlab.inria.fr/cado-nfs/cado-nfs/factoring-full -- cado-nfs.py",
     "radare2:run": "scripts/run-container.sh --rm -it radare2 --allow-no-aslr --mount $INIT_CWD -- r2",
     "radare2:build": "scripts/build-container.sh radare2",
     "pwndbg:run": "scripts/run-container.sh --rm -it pwndbg --allow-no-aslr --mount $INIT_CWD -- pwndbg",
