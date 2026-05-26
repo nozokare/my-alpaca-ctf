@@ -49,7 +49,15 @@ q = (-b - math.isqrt(D))//2
 assert p * q == n
 ```
 
-あとは $m' = (m ^ e) ^ d \mod n$ なので､ $$(ed) \cdot \delta \equiv 1 \pmod{(p-1)(q-1)}$$ を満たす $\delta$ が求まれば $$(m')^{\delta} \equiv m^{ed \cdot \delta} \equiv m \pmod n$$ でフラグを復元できます。
+あとは $m' = (m ^ e) ^ d \mod n$ なので、
+
+$$(ed) \cdot \delta \equiv 1 \pmod{(p-1)(q-1)}$$
+
+を満たす $\delta$ が求まれば
+
+$$(m')^{\delta} \equiv m^{ed \cdot \delta} \equiv m \pmod n$$
+
+でフラグを復元できます。
 
 ```python
 d = pow(e, -1, phi)
@@ -84,7 +92,7 @@ $$
 
 ## 余談
 
-$n = p \cdot q$ は 512bit × 512bit という大きさで素因数分解をするのは現実的ではないですが、$\phi = (p+1)(q+1)$ は大きい素因数を含む保証がないので、頑張れば $\phi$ だけで解けるのでは？と思って計算してみました。
+$n = p \cdot q$ は 512bit × 512bit という大きさで素因数分解をするのは現実的ではないですが､ $\phi = (p+1)(q+1)$ は大きい素因数を含む保証がないので、頑張れば $\phi$ だけで解けるのでは？と思って計算してみました。
 
 試し割り法とρ法で小さい因数を除いて gmp-ecm をぶん回した結果、次のような分解までは得られました。
 
