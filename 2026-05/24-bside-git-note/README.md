@@ -41,7 +41,7 @@ def safe_join(path: str) -> Path:
 
 ### undo
 
-`git reset --hard HEAD^` を実行して、最後のコミットを取り消します。
+`git reset --hard HEAD~1` を実行して、最後のコミットを取り消します。
 
 ---
 
