@@ -1,5 +1,7 @@
 
 export TZ=Asia/Tokyo
+HISTSIZE=100000
+HISTFILESIZE=1000000
 
 cdc() {
     local branch=$(git branch --show-current 2>/dev/null)
