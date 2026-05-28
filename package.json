@@ -12,6 +12,8 @@
     "one_gadget:run": "scripts/run-container.sh --rm -it one_gadget --mount $INIT_CWD -- one_gadget",
     "one_gadget:build": "scripts/build-container.sh one_gadget",
     "one_gadget:copy_libc": "scripts/copy-libc.sh --mount $INIT_CWD",
+    "ilspycmd:run": "scripts/run-container.sh --rm -it ilspycmd --mount $INIT_CWD -- ilspycmd",
+    "ilspycmd:build": "scripts/build-container.sh ilspycmd",
     "pypy:run": "scripts/run-container.sh --rm -it pypy:3 --mount $INIT_CWD -- pypy",
     "pypy:build": "scripts/build-container.sh pypy-jupyter",
     "pypy:install-kernel": "node ./scripts/docker-ipykernel.ts add --image pypy-jupyter --kernel python3 --display-name 'PyPy3(Docker)' --name pypy3",

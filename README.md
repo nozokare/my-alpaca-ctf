@@ -24,6 +24,7 @@
 - [PyPy](https://www.pypy.org/)
 - [radare2](https://rada.re/n/radare2.html)
 - [pwndbg](https://pwndbg.com/)
+- [ILSpyCmd](https://github.com/icsharpcode/ILSpy/tree/master/ICSharpCode.ILSpyCmd)
 
 コンテナ起動時にコマンドを実行したディレクトリが `/workdir` にマウントされ、コンテナ内で作業ディレクトリとして使用されます。
 
@@ -48,3 +49,8 @@
 
 - `npm run pwndbg:build`: `containers/pwndbg.dockerfile` をビルド
 - `npm run pwndbg:run ./chall`: `/workdir` にマウントされた `./chall` を `gdb` で開く
+
+### ILSpyCmd
+
+- `npm run ilspycmd:build`: `containers/ilspycmd.dockerfile` をビルド
+- `npm run ilspycmd:run -- ./AlpacaForm.dll`: `/workdir` にマウントされた .NET バイナリを `ilspycmd` で解析
