@@ -7,15 +7,15 @@ export type AlpacaHackAttachment = {
 
 export type AlpacaHackChallengeInfo = {
   pageUrl?: string;
-  title: string;
-  topic: string;
-  released: string;
-  category: string;
-  difficulty: string;
-  solves: number;
-  author: string;
+  title: string | null;
+  topic: string | null;
+  released: string | null;
+  category: string | null;
+  difficulty: string | null;
+  solves: number | null;
+  author: string | null;
   authorUrl?: string;
-  description: string;
+  description: string | null;
   details: string[];
   attachments: AlpacaHackAttachment[];
 };
@@ -40,71 +40,86 @@ export function parseAlpacaHackChallengeHtml(
 ): AlpacaHackChallengeInfo {
   const dom = new JSDOM(html, pageUrl ? { url: pageUrl } : undefined);
   const { document } = dom.window;
+  const challengeInfo: AlpacaHackChallengeInfo = {
+    ...(pageUrl ? { pageUrl } : {}),
+    title: null,
+    topic: null,
+    released: null,
+    category: null,
+    difficulty: null,
+    solves: null,
+    author: null,
+    description: null,
+    details: [],
+    attachments: [],
+  };
 
   const mainStack = document.querySelector("main.MuiStack-root");
   if (!(mainStack instanceof dom.window.HTMLElement)) {
-    throw new Error("challenge main stack not found");
+    return challengeInfo;
   }
 
   const titleElement = mainStack.querySelector("h1");
-  if (!(titleElement instanceof dom.window.HTMLHeadingElement)) {
-    throw new Error("challenge title element not found");
+  if (titleElement instanceof dom.window.HTMLHeadingElement) {
+    challengeInfo.title = getNodeText(titleElement) || null;
   }
 
   const metaElement = mainStack.querySelector("h1 ~ p");
-  if (!(metaElement instanceof dom.window.HTMLParagraphElement)) {
-    throw new Error("challenge metadata element not found");
+  if (metaElement instanceof dom.window.HTMLParagraphElement) {
+    const meta = extractHeaderMeta(metaElement);
+    challengeInfo.topic = meta.topic;
+    challengeInfo.released = meta.released;
   }
 
   const sectionRoot = mainStack.querySelector("article");
-  if (!(sectionRoot instanceof dom.window.HTMLElement)) {
-    throw new Error("challenge section root not found");
+  if (sectionRoot instanceof dom.window.HTMLElement) {
+    challengeInfo.description = extractDescription(sectionRoot);
+    challengeInfo.details = extractDetails(sectionRoot);
+    challengeInfo.attachments = extractAttachments(sectionRoot, pageUrl);
   }
 
-  const meta = extractHeaderMeta(metaElement);
-  const description = extractDescription(sectionRoot);
-  const details = extractDetails(sectionRoot);
-  const attachments = extractAttachments(sectionRoot, pageUrl);
   const extra = extractChallengeExtras(mainStack, pageUrl);
+  challengeInfo.category = extra.category;
+  challengeInfo.difficulty = extra.difficulty;
+  challengeInfo.solves = extra.solves;
+  challengeInfo.author = extra.author;
+  if (extra.authorUrl) {
+    challengeInfo.authorUrl = extra.authorUrl;
+  }
 
-  return {
-    ...(pageUrl ? { pageUrl } : {}),
-    title: getNodeText(titleElement),
-    topic: meta.topic,
-    released: meta.released,
-    category: extra.category,
-    difficulty: extra.difficulty,
-    solves: extra.solves,
-    author: extra.author,
-    ...(extra.authorUrl ? { authorUrl: extra.authorUrl } : {}),
-    description,
-    details,
-    attachments,
-  };
+  return challengeInfo;
 }
 
 function extractHeaderMeta(metaElement: HTMLParagraphElement): {
-  topic: string;
-  released: string;
+  topic: string | null;
+  released: string | null;
 } {
   const matches = getNodeText(metaElement).match(
     /^Topic:\s*(.+?)Released:\s*(.+)$/,
   );
 
-  const topic = matches?.at(1)?.trim() || "";
-  const released = matches?.at(2)?.trim() || "";
+  const topic = matches?.at(1)?.trim() || null;
+  const releasedText = matches?.at(2)?.trim() || null;
+  if (!releasedText) {
+    return { topic, released: null };
+  }
 
-  return { topic, released: formatDate(new Date(released)) };
+  const releasedDate = new Date(releasedText);
+  if (Number.isNaN(releasedDate.getTime())) {
+    return { topic, released: null };
+  }
+
+  return { topic, released: formatDate(releasedDate) };
 }
 
 function extractChallengeExtras(
   infoBox: Element,
   pageUrl?: string,
 ): {
-  category: string;
-  difficulty: string;
-  solves: number;
-  author: string;
+  category: string | null;
+  difficulty: string | null;
+  solves: number | null;
+  author: string | null;
   authorUrl?: string;
 } {
   const chips = [...infoBox.querySelectorAll("span.MuiChip-label")].map(
@@ -112,23 +127,20 @@ function extractChallengeExtras(
   );
   const solvesText = chips.find((text) => /\d+\s+solves?/i.test(text));
   const metaChips = chips.filter((text) => !/solves/i.test(text));
-  const category = metaChips[0];
-  const difficulty = metaChips[1];
+  const category = metaChips[0] ?? null;
+  const difficulty = metaChips[1] ?? null;
   const authorLink = [...infoBox.querySelectorAll("a[href]")].find((anchor) => {
     const href = anchor.getAttribute("href") ?? "";
     return /^\/users\//.test(href);
   });
 
-  const author = authorLink ? extractAuthorName(authorLink) : "";
+  const author = authorLink ? extractAuthorName(authorLink) || null : null;
   const authorUrl = authorLink
     ? (toAbsoluteUrl(authorLink.getAttribute("href") ?? "", pageUrl) ??
       undefined)
     : undefined;
-  const solves = solvesText ? Number.parseInt(solvesText, 10) : Number.NaN;
-
-  if (!category || !difficulty || !author || Number.isNaN(solves)) {
-    throw new Error("failed to parse challenge extra metadata");
-  }
+  const parsedSolves = solvesText ? Number.parseInt(solvesText, 10) : Number.NaN;
+  const solves = Number.isNaN(parsedSolves) ? null : parsedSolves;
 
   return {
     category,
@@ -148,8 +160,8 @@ function extractAuthorName(authorLink: Element): string {
   return getNodeText(authorLink);
 }
 
-function extractDescription(section: Element): string {
-  return section.querySelector(":scope > p")?.textContent || "";
+function extractDescription(section: Element): string | null {
+  return section.querySelector(":scope > p")?.textContent?.trim() || null;
 }
 
 function extractDetails(section: Element): string[] {
@@ -260,9 +272,14 @@ function normalizeBaseUrl(url?: string): string {
 
 function getNodeText(node: Element): string {
   const ownerDocument = node.ownerDocument;
+  const defaultView = ownerDocument.defaultView;
+  if (!defaultView) {
+    return normalizeSpace(node.textContent ?? "");
+  }
+
   const walker = ownerDocument.createTreeWalker(
     node,
-    ownerDocument.defaultView!.NodeFilter.SHOW_TEXT,
+    defaultView.NodeFilter.SHOW_TEXT,
   );
   const parts: string[] = [];
 

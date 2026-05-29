@@ -23,6 +23,10 @@ type ChallengeContext = {
   attachments: { name: string; url: string }[];
 };
 
+function hasText(value: string | null | undefined): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 function usage(): void {
   console.log(`Usage:
   node scripts/new-challenge.ts --url <challenge-url> [options]
@@ -84,17 +88,21 @@ function parseArgs(argv: string[]): Options {
 
 async function buildChallengeContext(
   challengeUrl: string,
+  options: Options,
 ): Promise<ChallengeContext> {
   const info = await fetchAlpacaHackChallengeInfo(challengeUrl);
-  const pageUrl = info.pageUrl ?? challengeUrl;
+  const resolvedInfo = await promptForMissingChallengeInfo(info, options);
+  const pageUrl = resolvedInfo.pageUrl ?? challengeUrl;
   const url = new URL(pageUrl);
   url.search = ""; // Ignore query parameters for slug/type inference.
   const slug = extractSlug(url);
   const type = inferType(url);
-  const date = info.released.replaceAll("-", "");
+  const title = requireText(resolvedInfo.title, "challenge title");
+  const released = requireText(resolvedInfo.released, "released date");
+  const date = released.replaceAll("-", "");
 
   if (!/^\d{8}$/.test(date)) {
-    throw new Error(`unexpected released date format: ${info.released}`);
+    throw new Error(`unexpected released date format: ${released}`);
   }
 
   const yyyy = date.slice(0, 4);
@@ -108,12 +116,20 @@ async function buildChallengeContext(
     type,
     date,
     branchName,
-    title: info.title,
+    title,
     slug,
     challengeDir,
     readmePath,
-    attachments: info.attachments,
+    attachments: resolvedInfo.attachments,
   };
+}
+
+function requireText(value: string | null | undefined, label: string): string {
+  if (hasText(value)) {
+    return value.trim();
+  }
+
+  throw new Error(`missing ${label}`);
 }
 
 function extractSlug(url: URL): string {
@@ -134,6 +150,99 @@ function inferType(url: URL): "daily" | "bside" {
   throw new Error(
     `failed to determine challenge type from URL: ${url.toString()}`,
   );
+}
+
+async function promptForMissingChallengeInfo(
+  info: Awaited<ReturnType<typeof fetchAlpacaHackChallengeInfo>>,
+  options: Options,
+): Promise<Awaited<ReturnType<typeof fetchAlpacaHackChallengeInfo>>> {
+  const missingFields = [
+    !hasText(info.title) ? "title" : null,
+    !hasText(info.released) ? "released" : null,
+  ].filter((field): field is string => field !== null);
+
+  if (missingFields.length === 0) {
+    return info;
+  }
+
+  if (!options.interactive) {
+    throw new Error(
+      `missing challenge ${missingFields.join(", ")}; rerun with -i to enter them manually`,
+    );
+  }
+
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    throw new Error("interactive mode requires a TTY");
+  }
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  try {
+    const title = hasText(info.title)
+      ? info.title.trim()
+      : await askRequiredField(rl, "Challenge title: ");
+    const released = hasText(info.released)
+      ? normalizeReleasedDate(info.released)
+      : await askReleasedDate(rl, "Released date (YYYY-MM-DD): ");
+
+    return {
+      ...info,
+      title,
+      released,
+    };
+  } finally {
+    rl.close();
+  }
+}
+
+async function askRequiredField(
+  rl: readline.Interface,
+  prompt: string,
+): Promise<string> {
+  while (true) {
+    const value = (await rl.question(prompt)).trim();
+    if (value) {
+      return value;
+    }
+  }
+}
+
+async function askReleasedDate(
+  rl: readline.Interface,
+  prompt: string,
+): Promise<string> {
+  while (true) {
+    const value = (await rl.question(prompt)).trim();
+    try {
+      return normalizeReleasedDate(value);
+    } catch {
+      // Ask again until the user enters a parseable date.
+    }
+  }
+}
+
+function normalizeReleasedDate(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    throw new Error("released date is required");
+  }
+
+  const compact = trimmed.replaceAll("-", "").replaceAll("/", "");
+  if (/^\d{8}$/.test(compact)) {
+    return `${compact.slice(0, 4)}-${compact.slice(4, 6)}-${compact.slice(6, 8)}`;
+  }
+
+  const parsed = new Date(trimmed);
+  if (Number.isNaN(parsed.getTime())) {
+    throw new Error("released date must be parseable");
+  }
+
+  return `${parsed.getFullYear().toString().padStart(4, "0")}-${(parsed.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${parsed.getDate().toString().padStart(2, "0")}`;
 }
 
 async function ensureChallengeDir(
@@ -369,7 +478,7 @@ async function main(): Promise<void> {
   const parsedOptions = parseArgs(process.argv.slice(2));
   const options = await promptForMissingOptions(parsedOptions);
   const git = ensureGitContext();
-  const challenge = await buildChallengeContext(options.challengeUrl);
+  const challenge = await buildChallengeContext(options.challengeUrl, options);
 
   switchToBranch(git, challenge.branchName);
 

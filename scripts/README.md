@@ -11,6 +11,7 @@
 - `CONNECT=` を書いた `.env` を生成
 
 公開ページの情報から `type`・`date`・`title`・`slug`・attachments を自動で決定します。
+必要な情報が足りない場合は `-i` で title / released date を手動入力できます。
 
 ```bash
 node ./scripts/new-challenge.ts --url https://alpacahack.com/daily/challenges/alpacker
